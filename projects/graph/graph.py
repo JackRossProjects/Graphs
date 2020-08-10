@@ -13,33 +13,76 @@ class Graph:
         """
         Add a vertex to the graph.
         """
-        pass  # TODO
+        self.vertices[vertex_id] = set()
 
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
         """
-        pass  # TODO
+        self.vertices[v1].add(v2)
 
     def get_neighbors(self, vertex_id):
         """
         Get all neighbors (edges) of a vertex.
         """
-        pass  # TODO
+        return self.vertices[vertex_id]
 
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        # Initialize a queue
+        q = Queue()
+        # Initialize a set of visited nodes
+        visited = set()
+        # Add the root node to the queue
+        q.enqueue(starting_vertex)
+        # Initialize final list
+        visitList = []
+        # While there are still items left in the queue
+        while q.size() > 0:
+            # V is equal to the first element in the queue
+            v = q.dequeue()
+            # If we have not already logged that node
+            if v not in visited:
+                # Add it to the visited set
+                visited.add(v)
+                # Print that node/vertex value
+                print(v)
+                # For each node in the neighboring nodes
+                for next_vert in self.get_neighbors(v):
+                    # Add the next vertex to the queue
+                    q.enqueue(next_vert)
+
 
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        # Initialze stack
+        s = Stack()
+        # Initialize visited set
+        visited = set()
+        # Place the starting node/vertex on the top of the stack
+        s.push(starting_vertex)
+        # initialize visit list
+        visitList = []
+        # while there is still items in the stack
+        while s.size() > 0:
+            # V equals the top value of the stack
+            v = s.pop()
+            # If we haven't seen this vertex/node before
+            if v not in visited:
+                # add it to our visited set
+                visited.add(v)
+                # print that vertex
+                print(v)
+                # for the next vertex in the list of neighbors
+                for next_vert in self.get_neighbors(v):
+                    # make the next vertex the top of the stack
+                    s.push(next_vert)
 
     def dft_recursive(self, starting_vertex):
         """
@@ -56,7 +99,35 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+        # Initialize queue and visited set
+        q = Queue()
+        visited = set()
+        # Make the starting vertex the first value in the queue
+        q.enqueue([starting_vertex])
+        # While there are still objects in the queue
+        while q.size() > 0:
+            # the path will be equal to the front value in the queue
+            path = q.dequeue()
+            # V equals the last value in the path
+            v = path[-1]
+            # If we havent seen that value yet
+            if v not in visited:
+                # Check if that value IS the destination
+                if v == destination_vertex:
+                    # If so, return the shortest path
+                    return path
+                # Add that value to the visited set
+                visited.add(v)
+                # For the next node/vertex in list of neighbors
+                for next_vert in self.get_neighbors(v):
+                    # the new path will be a list
+                    new_path = list(path)
+                    # and we'll add the next vertex/node to the end of the list
+                    new_path.append(next_vert)
+                    # now we'll add the new path values to the back of the queue
+                    q.enqueue(new_path)
+
+        return None # "Path not found."
 
     def dfs(self, starting_vertex, destination_vertex):
         """
