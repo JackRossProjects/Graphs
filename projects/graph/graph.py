@@ -84,14 +84,29 @@ class Graph:
                     # make the next vertex the top of the stack
                     s.push(next_vert)
 
-    def dft_recursive(self, starting_vertex):
+
+
+    def dft_recursive(self, starting_vertex, visited=None):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
 
         This should be done using recursion.
         """
-        pass  # TODO
+        # Fix Python weirdness of initializing mutable default parameters
+        if visited is None:
+            # Set of visited values
+            visited = set()
+        # Add the root/starting vertex to the visited set
+        visited.add(starting_vertex)
+        print(starting_vertex)
+        # For each neighboring vertex
+        for neighbor in self.vertices[starting_vertex]:
+            # Check if that neighbor vertex has been visited
+            if neighbor not in visited:
+                # Recurse on that neighbor vertex
+                self.dft_recursive(neighbor, visited)
+
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -129,23 +144,61 @@ class Graph:
 
         return None # "Path not found."
 
+
+
+
+
+
+
     def dfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
 
-    def dfs_recursive(self, starting_vertex, destination_vertex):
+
+
+
+
+
+
+    def dfs_recursive(self, starting_vertex, destination_vertex, visited=None, path=None):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
         depth-first order.
-
-        This should be done using recursion.
         """
-        pass  # TODO
+        # Fix Python weirdness of initializing mutable default parameters
+        if visited is None:
+            visited = set()
+        # Fix Python weirdness of initializing mutable default parameters
+        if path is None:
+            path = []
+        # Add starting vertex to visited set
+        visited.add(starting_vertex)
+
+        # Makes a copy of path and append the starting vertex
+        path = path + [starting_vertex]
+        # Line above is equivalent to:
+        '''
+        path = list(path) #Makes a copy of path
+        path.append(starting_vert)
+        '''
+
+        # If we've made it to the destination vertex
+        if starting_vertex == destination_vertex:
+            # Return the shortest path
+            return path
+        # Otherwise, for each neighboring vertex
+        for neighbor in self.get_neighbors(starting_vertex):
+            # Check if we have visited that neighbor vertex
+            if neighbor not in visited:
+                # If not, recurse on that neighbor
+                new_path = self.dfs_recursive(neighbor, destination_vertex, visited, path)
+                if new_path is not None:
+                    return new_path
+        return None
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
