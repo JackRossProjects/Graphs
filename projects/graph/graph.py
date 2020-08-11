@@ -145,22 +145,41 @@ class Graph:
         return None # "Path not found."
 
 
-
-
-
-
-
     def dfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
         depth-first order.
         """
+        # Initialize stack and visited set
+        s = Stack()
+        visited = set()
+        # Make the starting vertex the first value in the stack
+        s.push([starting_vertex])
+        # While there are still objects in the stack
+        while s.size() > 0:
+            # the path will be equal to the top value in the stack
+            path = s.pop()
+            # V equals the last value in the path
+            v = path[-1]
+            # If we havent seen that value yet
+            if v not in visited:
+                # Check if that value IS the destination
+                if v == destination_vertex:
+                    # If so, return the shortest path
+                    return path
+                # Add that value to the visited set
+                visited.add(v)
+                # For the next node/vertex in list of neighbors
+                for next_vert in self.get_neighbors(v):
+                    # the new path will be a list
+                    new_path = list(path)
+                    # and we'll add the next vertex/node to the end of the list
+                    new_path.append(next_vert)
+                    # now we'll add the new path values to the top of the stack
+                    s.push(new_path)
 
-
-
-
-
+        return None # "Path not found."
 
 
     def dfs_recursive(self, starting_vertex, destination_vertex, visited=None, path=None):
