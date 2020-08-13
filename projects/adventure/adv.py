@@ -29,23 +29,72 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+'''
+YOUR CODE HERE
+'''
 
+# Initialize visited dicr
+visited = {}
+
+# Initialize exit path
+exit_path = []
+
+# Dict containing inverse of cardinal directions
+inverse_direction = {"n":"s", "e":"w", "s":"n", "w":"e"}
+
+# Add starting room to visited dict
+visited[player.current_room.id] = player.current_room.get_exits()
+
+# While all the rooms have not been visited
+while len(visited) < len(room_graph):
+    # If the player is in a new room
+    if player.current_room.id not in visited:
+        # add room to visited dict
+        visited[player.current_room.id] = player.current_room.get_exits() 
+        # Add the last value in exit path to directions
+        direction = exit_path[-1]
+        # then remove the direction you came from
+        visited[player.current_room.id].remove(direction)
+    # in a room with exhausted directions:
+    if len(visited[player.current_room.id]) == 0:
+        # Remove the exit path step we just moved
+        direction = exit_path.pop()
+        # Add that direction to the traversal path
+        traversal_path.append(direction)
+        # Go back to the room you came from
+        player.travel(direction)
+    else:
+    # in a room with unexplored directions:
+        # remove the direction you will go from the room
+        direction = visited[player.current_room.id].pop()
+        # Append the new direction to the traversal path
+        traversal_path.append(direction)
+        # Append the opposite direction we came in to the exit path
+        exit_path.append(inverse_direction[direction])
+        # Travel in an unexplored direction
+        player.travel(direction)
+
+'''
+YOUR CODE ENDS
+'''
 
 # TRAVERSAL TEST
-visited_rooms = set()
+visited = set()
 player.current_room = world.starting_room
-visited_rooms.add(player.current_room)
+visited.add(player.current_room)
+
+# get the first room and exits added to the visited
+#
 
 for move in traversal_path:
     player.travel(move)
-    visited_rooms.add(player.current_room)
+    visited.add(player.current_room)
 
-if len(visited_rooms) == len(room_graph):
-    print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
+if len(visited) == len(room_graph):
+    print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited)} rooms visited")
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-    print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
-
+    print(f"{len(room_graph) - len(visited)} unvisited rooms")
 
 
 #######
