@@ -1,5 +1,18 @@
 import random
 
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+        
 class User:
     def __init__(self, name):
         self.name = name
@@ -82,20 +95,12 @@ class SocialGraph:
         # {1: [1], 8: [1, 8], 10: [1, 10], 5: [1, 5], 2: [1, 10, 2], 6: [1, 10, 6], 7: [1, 10, 2, 7]}    EXAMPLE OUTPUT
         visited = dict()
         q = Queue()
-        
-        #self.friendships
-
         my_list = []
         for user in self.users:
             path = self.bfs(user_id, user)
-            # my_tuple = (user_id, user, path)
-            # my_list.append(my_tuple)
             visited[user] = path
-
         return visited
-
-    
-    # Helper functions   
+ 
     def get_neighbors(self, vertex_id):
         return self.friendships[vertex_id]
         
@@ -123,18 +128,7 @@ class SocialGraph:
 
                     q.enqueue(current_path + [neighbor])
 
-class Queue():
-    def __init__(self):
-        self.queue = []
-    def enqueue(self, value):
-        self.queue.append(value)
-    def dequeue(self):
-        if self.size() > 0:
-            return self.queue.pop(0)
-        else:
-            return None
-    def size(self):
-        return len(self.queue)
+
 
 
 if __name__ == '__main__':
