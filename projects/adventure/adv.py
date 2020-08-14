@@ -29,11 +29,9 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
-'''
-YOUR CODE HERE
-'''
 
-# Initialize visited dicr
+
+# Initialize visited dict
 visited = {}
 
 # Initialize exit path
@@ -74,9 +72,7 @@ while len(visited) < len(room_graph):
         # Travel in an unexplored direction
         player.travel(direction)
 
-'''
-YOUR CODE ENDS
-'''
+
 
 # TRAVERSAL TEST
 visited = set()
